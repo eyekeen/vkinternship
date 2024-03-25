@@ -60,6 +60,9 @@ class UserController
                 $token = Random::str(50);
                 $user->update(['token' => $token]);
                 setcookie(Auth::getTokenColumn(), $token);
+                return [
+                    
+                ];
                 Redirect::to('/login');
             } else {
                 // TODO: add error message
