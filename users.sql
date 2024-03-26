@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `email` varchar(250) DEFAULT NULL,
   `password` varchar(250) DEFAULT NULL,
   `token` varchar(255) DEFAULT NULL,
@@ -49,7 +49,6 @@ CREATE TABLE `users` (
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
