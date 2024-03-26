@@ -16,6 +16,7 @@
         }
     },
     "require": {
-        "codin/dot": "^0.1.2"
+        "codin/dot": "^0.1.2",
+        "firebase/php-jwt": "^6.10"
     }
 }

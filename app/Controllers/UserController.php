@@ -53,24 +53,7 @@ class UserController
 
     public function login(Request $request)
     {
-        $user = (new User())->find('email', $request->post('email'));
-
-        if ($user) {
-            if (password_verify($request->post('password'), $user->getPassword())) {
-                $token = Random::str(50);
-                $user->update(['token' => $token]);
-                setcookie(Auth::getTokenColumn(), $token);
-                return [
-                    
-                ];
-                Redirect::to('/login');
-            } else {
-                // TODO: add error message
-                Redirect::to('/login');
-            }
-        } else {
-            dd('User not found');
-        }
+        $this->service->login($request);
     }
 
     public function logout()

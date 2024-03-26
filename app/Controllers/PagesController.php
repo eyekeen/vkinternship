@@ -13,6 +13,11 @@ class PagesController
         ]);
     }
 
+    public function feed(): void {
+        http_response_code(200);
+        header('content-type: application/json');
+    }
+
     public function about(): void
     {
         View::show("pages/about", [
