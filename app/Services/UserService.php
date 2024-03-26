@@ -52,7 +52,7 @@ class UserService
                 $jwt = JWT::encode($payload, $secret_key, 'HS256');
 
                 $user->update(['token' => $secret_key]);
-                setcookie(Auth::getTokenColumn(), $jwt);
+
                 Response::json(201, ['access_token' => $jwt]);
             } else {
                 Response::json(403, ['error' => 'wrong email or password']);

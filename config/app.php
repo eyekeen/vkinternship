@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'exception_view' => 'app/exception',
-    'lang' => 'ru',
-    'debug' => true,
+    'exception_view' => $_ENV['EXCEPTION_VIEW'] ?? 'app/exception',
+    'lang' => $_ENV['LANG'] ?? 'ru',
+    'debug' => $_ENV['DEBUG'] ?? true,
 ];

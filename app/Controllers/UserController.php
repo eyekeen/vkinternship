@@ -68,9 +68,6 @@ class UserController
 
     public function logout()
     {
-        unset($_COOKIE[Auth::getTokenColumn()]);
-        setcookie(Auth::getTokenColumn(), NULL);
-        
         $auth_token = getallheaders()['Authorization'] ?? false;
 
         if(!$auth_token){
