@@ -10,6 +10,7 @@ class User extends Model {
     protected array $fields = ['email', 'token', 'password'];
     protected string $email;
     protected string $password;
+    protected ?string $token = null;
 
     public function setEmail(string $email): void {
         $this->email = $email;
@@ -29,5 +30,9 @@ class User extends Model {
 
     public function getPassword(): string {
         return $this->password;
+    }
+
+    public function getToken(): ?string {
+        return $this->token;
     }
 }

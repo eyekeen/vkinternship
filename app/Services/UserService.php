@@ -150,9 +150,20 @@ class UserService
 
 
         try {
-            $decode = (array) JWT::decode($auth_token, new Key($secret_key, 'HS256'));
+            $decoded = (array) JWT::decode($auth_token, new Key($secret_key, 'HS256'));
 
-            $user = (new User())->find('id', $decode['user_id']);
+            $user = (new User())->find('id', $decoded['user_id']);
+
+            if (!$user->getToken()) {
+                $response = new Response(
+                    json_encode(['error' => 'unauthorized']),
+                    Response::HTTP_UNAUTHORIZED,
+                    ['content-type' => 'application/json']
+                );
+                $response->send();
+                exit;
+            }
+
             $user->update(['token' => null]);
 
 

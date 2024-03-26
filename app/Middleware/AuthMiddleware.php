@@ -40,7 +40,7 @@ class AuthMiddleware extends Middleware
         try {
             $decoded = (array) JWT::decode($auth_token, new Key($secret_key, 'HS256'));
 
-            if (!$user = (new User())->find('token', $secret_key)) {
+            if (!$user = (new User())->find('id', $decoded['user_id'])->getToken()) {
                 $response = new Response(
                     json_encode(['error' => 'unauthorized']),
                     Response::HTTP_UNAUTHORIZED,
@@ -49,7 +49,6 @@ class AuthMiddleware extends Middleware
                 $response->send();
                 exit;
             }
-
         } catch (SignatureInvalidException $th) {
             $response = new Response(
                 json_encode(['error' => 'unauthorized']),
