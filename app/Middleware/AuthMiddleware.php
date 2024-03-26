@@ -4,8 +4,11 @@ namespace App\Middleware;
 
 use App\Application\Middleware\Middleware;
 use App\Application\Config\Config;
-use App\Application\Response\Response;
 use App\Models\User;
+
+
+use Symfony\Component\HttpFoundation\Response;
+
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -20,12 +23,15 @@ class AuthMiddleware extends Middleware
         $auth_token = getallheaders()['Authorization'] ?? false;
 
         if (!$auth_token) {
-            $response = json_encode(['error' => 'unauthorized']);
-            http_response_code(403);
-            header('content-type: application/json');
-            echo $response;
+            $response = new Response(
+                json_encode(['error' => 'unauthorized']),
+                Response::HTTP_UNAUTHORIZED,
+                ['content-type' => 'application/json']
+            );
+            $response->send();
             exit;
         }
+
 
         $secret_key = Config::get('auth.jwt_secret');
 
@@ -35,18 +41,22 @@ class AuthMiddleware extends Middleware
             $decoded = (array) JWT::decode($auth_token, new Key($secret_key, 'HS256'));
 
             if (!$user = (new User())->find('token', $secret_key)) {
-                $response = json_encode(['error' => 'unauthorized']);
-                http_response_code(403);
-                header('content-type: application/json');
-                echo $response;
+                $response = new Response(
+                    json_encode(['error' => 'unauthorized']),
+                    Response::HTTP_UNAUTHORIZED,
+                    ['content-type' => 'application/json']
+                );
+                $response->send();
                 exit;
             }
 
         } catch (SignatureInvalidException $th) {
-            $response = json_encode(['error' => 'unauthorized']);
-            http_response_code(403);
-            header('content-type: application/json');
-            echo $response;
+            $response = new Response(
+                json_encode(['error' => 'unauthorized']),
+                Response::HTTP_UNAUTHORIZED,
+                ['content-type' => 'application/json']
+            );
+            $response->send();
             exit;
         }
     }

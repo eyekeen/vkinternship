@@ -2,7 +2,8 @@
 
 namespace App\Application\Router;
 
-use App\Application\Request\Request;
+use Symfony\Component\HttpFoundation\Request;
+
 
 trait RouterHelper {
 
@@ -15,7 +16,7 @@ trait RouterHelper {
     protected static function controller(array $route) {
         $controller = new $route['controller']();
         $method = $route['method'];
-        $request = new Request($_POST, $_GET, $_FILES);
+        $request = Request::createFromGlobals();
         $controller->$method($request);
     }
 }

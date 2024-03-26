@@ -8,7 +8,6 @@ use App\Application\Router\Router;
 use App\Exceptions\ViewNotFoundException;
 use App\Application\Views\View;
 use App\Exceptions\ComponentNotFoundException;
-use App\Application\Auth\Auth;
 
 class App {
 
@@ -30,7 +29,6 @@ class App {
         require_once __DIR__ . '/../../routes/actions.php';
         require_once __DIR__ . '/../../routes/pages.php';
         $router = new Router();
-        Auth::init();
         $router->handle(Route::list());
     }
 }
