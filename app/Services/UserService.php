@@ -101,7 +101,7 @@ class UserService
 
                 $jwt = JWT::encode($payload, $secret_key, 'HS256');
 
-                $user->update(['token' => $secret_key]);
+                $user->update(['token' => $jwt]);
 
                 $response = new Response(
                     json_encode(['access_token' => $jwt]),
