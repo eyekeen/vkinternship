@@ -3,14 +3,13 @@
 namespace App\Services;
 
 use App\Application\Request\Request;
+use App\Application\Response\Response;
 use App\Models\User;
-use App\Application\Helpers\Random;
 use App\Application\Auth\Auth;
 
 use App\Application\Config\Config;
 
 use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
 
 /**
  * Description of UserService
@@ -47,21 +46,21 @@ class UserService
                 
                 $secret_key = Config::get('auth.jwt_secret');
                 $payload = [
-                    $user->getId(),
+                    'user_id' => $user->getId(),
                 ];
 
                 $jwt = JWT::encode($payload, $secret_key, 'HS256');
-                // $decoded = JWT::decode($jwt, new Key($secret_key, 'HS256'));
 
                 $user->update(['token' => $secret_key]);
                 setcookie(Auth::getTokenColumn(), $jwt);
-                echo json_encode(['access_toekn' => $jwt]);
+                Response::json(201, ['access_token' => $jwt]);
             } else {
-                // TODO: add error message
-                echo 'wrong email or password';
+                Response::json(403, ['error' => 'wrong email or password']);
+                exit;
             }
         } else {
-            dd('User not found');
+            Response::json(404, ['msg' => 'User not found']);
+            exit;
         }
     }
 }
