@@ -7,10 +7,11 @@ use App\Application\Database\Model;
 class User extends Model {
 
     protected string $table = 'users';
-    protected array $fields = ['email', 'token', 'password'];
+    protected array $fields = ['email', 'token', 'expired_at', 'password'];
     protected string $email;
     protected string $password;
     protected ?string $token = null;
+    protected ?string $expired_at = null;
 
     public function setEmail(string $email): void {
         $this->email = $email;
@@ -34,5 +35,8 @@ class User extends Model {
 
     public function getToken(): ?string {
         return $this->token;
+    }
+    public function getExpiredAt(): ?string {
+        return $this->expired_at;
     }
 }

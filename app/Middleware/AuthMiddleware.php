@@ -40,7 +40,14 @@ class AuthMiddleware extends Middleware
         try {
             $decoded = (array) JWT::decode($auth_token, new Key($secret_key, 'HS256'));
 
-            if (!$user = (new User())->find('id', $decoded['user_id'])->getToken()) {
+            $user = (new User())->find('id', $decoded['user_id']);
+            
+            $exp_date = new \DateTime($user->getExpiredAt()) < new \DateTime('now');
+            
+            if (
+                !$user->getToken() ||
+                ($user->getToken() && $exp_date)
+            ) {
                 $response = new Response(
                     json_encode(['error' => 'unauthorized']),
                     Response::HTTP_UNAUTHORIZED,

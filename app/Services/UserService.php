@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\User;
@@ -94,14 +95,22 @@ class UserService
         if ($user) {
             if (password_verify($request->request->get('password'), $user->getPassword())) {
 
+                $expired_at = new DateTime('now');
+                $expired_at->modify('+1 day');
+                $expired_at = $expired_at->format('Y-m-d H:i:s');
+
+
                 $secret_key = Config::get('auth.jwt_secret');
                 $payload = [
                     'user_id' => $user->getId(),
+                    'sub' => 'feed access token',
+                    'exp' => $expired_at,
                 ];
 
                 $jwt = JWT::encode($payload, $secret_key, 'HS256');
 
                 $user->update(['token' => $jwt]);
+                $user->update(['expired_at' => $expired_at]);
 
                 $response = new Response(
                     json_encode(['access_token' => $jwt]),
@@ -154,7 +163,12 @@ class UserService
 
             $user = (new User())->find('id', $decoded['user_id']);
 
-            if (!$user->getToken()) {
+            $exp_date = new \DateTime($user->getExpiredAt()) < new \DateTime('now');
+
+            if (
+                !$user->getToken() ||
+                ($user->getToken() && $exp_date)
+            ) {
                 $response = new Response(
                     json_encode(['error' => 'unauthorized']),
                     Response::HTTP_UNAUTHORIZED,
