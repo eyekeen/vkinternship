@@ -19,7 +19,7 @@ cp .env.example .env
 ```
 
 ```bash
-docker-compose up -d
+docker-compose up -d --build
 ```
 
 [Коллекция postman c API эндпоинтами.](./auth_api.postman_collection.json) Для авторизации используется Bearer token.
