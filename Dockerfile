@@ -11,10 +11,14 @@ RUN apt-get update \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-CMD composer install; apache2-foreground
-
 # Set the working directory to /var/www/html
 WORKDIR /var/www/html
 
 # Copy the source code in /www into the container at /var/www/html
 COPY . /var/www/html
+
+# Copy the entrypoint script into the container
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+# Use the entrypoint script as the entrypoint
+ENTRYPOINT ["entrypoint.sh"]
