@@ -12,6 +12,7 @@ services:
             - default
     db:
         image: mysql
+        container_name: vkdb
         ports: 
             - "${PORT}:${PORT}"
         environment:
