@@ -4,6 +4,9 @@ namespace App\Services;
 
 use DateTime;
 use Symfony\Component\HttpFoundation\Request;
+
+use App\Application\Helpers\ResponseHelper;
+
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\User;
 
@@ -35,6 +38,8 @@ class UserService
 
         $user_id = $user->find('email', $user->getEmail())->getId();
 
+        // ResponseHelper::ok(['user_id' => $user_id,'password_check_status' => 'good']);
+        
         $response = new Response(
             json_encode(
                 [
@@ -130,7 +135,7 @@ class UserService
         } else {
             $response = new Response(
                 json_encode(['msg' => 'wrong email or password']),
-                Response::HTTP_NOT_FOUND,
+                Response::HTTP_BAD_REQUEST,
                 ['content-type' => 'application/json']
             );
             $response->send();
