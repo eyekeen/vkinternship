@@ -21,6 +21,7 @@ cp .env.example .env
 ```bash
 docker-compose up -d --build
 ```
+Если при создании контейнера не выполнилась команда composer install то нужно зайти в контейнер и в папке /var/www/html прописать её вручную
 
 [Коллекция postman c API эндпоинтами.](./auth_api.postman_collection.json) Для авторизации используется Bearer token.
 
