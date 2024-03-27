@@ -129,7 +129,7 @@ class UserService
             }
         } else {
             $response = new Response(
-                json_encode(['msg' => 'User not found']),
+                json_encode(['msg' => 'wrong email or password']),
                 Response::HTTP_NOT_FOUND,
                 ['content-type' => 'application/json']
             );
@@ -163,7 +163,7 @@ class UserService
 
             $user = (new User())->find('id', $decoded['user_id']);
 
-            $exp_date = new \DateTime($user->getExpiredAt()) < new \DateTime('now');
+            $exp_date = new DateTime($user->getExpiredAt()) < new DateTime('now');
 
             if (
                 !$user->getToken() ||

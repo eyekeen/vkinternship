@@ -3,7 +3,7 @@ services:
     www:
         build: .
         ports: 
-            - "8001:80"
+            - "8000:80"
         volumes:
             - ./:/var/www/html/
         links:
@@ -13,26 +13,17 @@ services:
     db:
         image: mysql
         ports: 
-            - "3306:3306"
+            - "${PORT}:${PORT}"
         environment:
-            MYSQL_DATABASE: framework
-            MYSQL_USER: tarum
-            MYSQL_PASSWORD: root123
+            MYSQL_DATABASE: ${DBNAME}
+            MYSQL_USER: ${USER}
+            MYSQL_PASSWORD: ${PASSWORD}
             MYSQL_ROOT_PASSWORD: root
+            MYSQL_ALLOW_EMPTY_PASSWORD: true
         volumes:
             - ./dump:/docker-entrypoint-initdb.d
             - persistent:/var/lib/mysql
         networks:
             - default
-    # phpmyadmin:
-    #     image: phpmyadmin/phpmyadmin
-    #     links: 
-    #         - db:db
-    #     ports:
-    #         - 8000:80
-    #     environment:
-    #         MYSQL_USER: tarum
-    #         MYSQL_PASSWORD: root123
-    #         MYSQL_ROOT_PASSWORD: root
 volumes:
     persistent:

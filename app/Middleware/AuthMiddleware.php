@@ -47,6 +47,7 @@ class AuthMiddleware extends Middleware
             if (
                 !$user->getToken() ||
                 ($user->getToken() && $exp_date)
+                || $auth_token != $user->getToken()
             ) {
                 $response = new Response(
                     json_encode(['error' => 'unauthorized']),
