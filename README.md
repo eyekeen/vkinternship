@@ -1,16 +1,32 @@
 Сервис для регистрации и авторизации.
 
-### API
+## API
 
-Сервис имеет 3 api-метода:
+### API endpoints
+[Коллекция postman c API эндпоинтами](./auth_api.postman_collection.json)
 
-- **POST /register** входные параметры string email, string password. Есть проверка валидности и уникальности email. Также имеется проверка надежности пароля - если пароль легко подобрать, - выкидывает ошибку weak_password. На выходе возвращает int user_id, string password_check_status.
+Сервис имеет 4 api-метода:
 
-- **POST /authorize** входные параметры string email, string password. В ответ - jwt-токен в котором будет лежать user_id.
+**POST /register**
+- Описание: регистрация нового пользователя.
+- Входные параметры: email (string) и password (string)
+- Проверки: валидность и уникальность email. Надежность пароля (если пароль легко подобрать, возвращается ошибка weak_password)
+- Выходные данные: user_id (int) и password_check_status (string)
 
-- **POST /logout** принимает валидный jwt токен в Authorization Bearer и удаляет его из базы.
+**POST /authorize** 
+- Описание: авторизация пользователя.
+- Входные параметры: email (string) и password (string)
+- JWT-токен, содержащий user_id и expire_date
 
-- **GET /feed** принимает jwt токен в Authorization Bearer. Если токен валидный возвращает код 200 иначе 401 unauthorized.
+**POST /logout**
+- Описание: выход пользователя из системы.
+- Входные параметры: JWT-токен в заголовке Authorization в формате Bearer <token>
+- Действие: Удаление валидного JWT-токена из базы данных.
+
+**GET /feed** 
+- Описание: проверка валидности JWT-токена.
+- Входные параметры: JWT-токен в заголовке Authorization в формате Bearer <token>
+- Выходные данные: код 200, если токен валиден и код 401 unauthorized, если токен невалиден
 
 ### Установка и запуск
 Копирование файла с переменными окружения
@@ -25,8 +41,3 @@ docker-compose up -d --build
 ```bash
 docker-compose run --rm www composer install
 ```
-Если при создании контейнера не выполнилась команда composer install то нужно зайти в контейнер и в папке /var/www/html прописать её вручную
-
-[Коллекция postman c API эндпоинтами.](./auth_api.postman_collection.json) Для авторизации используется Bearer token.
-
-![bearer.jpg](./bearer.jpg)
