@@ -1,5 +1,8 @@
 Сервис для регистрации и авторизации.
 
+Docker v26.0.0
+docker compose v2.25.0
+
 ## API
 
 ### API endpoints
@@ -35,9 +38,9 @@ cp .env.example .env
 ```
 Сборка контейнера
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
 ```
 Установка зависимостей
 ```bash
-docker-compose run --rm www composer install
+docker compose run --rm www composer install
 ```
