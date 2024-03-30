@@ -32,15 +32,16 @@ docker compose v2.25.0
 - Выходные данные: код 200, если токен валиден и код 401 unauthorized, если токен невалиден
 
 ### Установка и запуск
-Копирование файла с переменными окружения
+1.Копируем файл с переменными окружения
 ```bash
 cp .env.example .env
 ```
-Сборка контейнера
+2.Сборка контейнера
 ```bash
 docker compose up -d --build
 ```
-Установка зависимостей
+3.Установка зависимостей
 ```bash
 docker compose run --rm www composer install
 ```
+4.Импортируем в postman [коллекция c API эндпоинтами](./auth_api.postman_collection.json)
